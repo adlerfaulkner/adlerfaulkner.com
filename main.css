@@ -196,7 +196,12 @@ h3 {
 }
 
 .project-container {
-  display: none;
+  opacity: 0;
+  -webkit-transition: opacity 400ms ease-in;
+  -moz-transition: opacity 400ms ease-in;
+  -ms-transition: opacity 400ms ease-in;
+  -o-transition: opacity 400ms ease-in;
+  transition: opacity 400ms ease-in;
   position: relative;
   margin:15px 15px 40px 15px;
 }

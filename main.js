@@ -51,18 +51,18 @@ var projects = [
   },
 ];
 
-loadProjects = function() {
-  var template = $('.project-container.template');
-  var list = $('#main-card .card-body');
-  $.each(projects, function(i, project) {
-    var card = template.clone().removeClass('template');
+var cardTemplate, projectList;
+
+loadProject = function(i) {
+  if (projects.length >= i+1) {
+    project = projects[i];
+    var card = cardTemplate.clone().removeClass('template');
     var img = card.find('img');
     img.data('src', project['card_image']);
     card.find('p').html(project['title']);
-    list.append(card);
+    projectList.append(card);
     loadImageHelper(img.get(0));
-    // card.show();
-  });
+  }
 }
 
 loadImageHelper = function(image) {
@@ -71,8 +71,9 @@ loadImageHelper = function(image) {
   downloadingImage.onload = function() {
     image.src = this.src;
     projectContainer = $image.closest('.project-container');
-    if (projectContainer.length) {
-      projectContainer.show(400);
+    if (projectContainer.length > 0) {
+      projectContainer.css('opacity', 1)
+      loadProject(projectContainer.index() + 1);
     }
   }
   downloadingImage.onerror = function() {
@@ -91,5 +92,7 @@ loadImages = function() {
 }
 
 window.onload = function() {
-  loadProjects()
+  cardTemplate = $('.project-container.template');
+  projectList = $('#main-card .card-body');
+  loadProject(0)
 };
