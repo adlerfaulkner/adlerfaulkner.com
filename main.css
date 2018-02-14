@@ -238,6 +238,7 @@ h3 {
   object-fit: cover;
   height:100%;
   width:100%;
+  background-color: #D8D8D8;
 }
 .project-container p {
   position: absolute;

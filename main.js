@@ -61,7 +61,7 @@ loadProjects = function() {
     card.find('p').html(project['title']);
     list.append(card);
     loadImageHelper(img.get(0));
-    card.show();
+    // card.show();
   });
 }
 
@@ -70,6 +70,10 @@ loadImageHelper = function(image) {
   var downloadingImage = new Image();
   downloadingImage.onload = function() {
     image.src = this.src;
+    projectContainer = $image.closest('.project-container');
+    if (projectContainer.length) {
+      projectContainer.show(400);
+    }
   }
   downloadingImage.onerror = function() {
     return false;
