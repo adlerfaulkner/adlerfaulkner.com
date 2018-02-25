@@ -416,10 +416,10 @@ h3 {
   }
   h3 {
     letter-spacing: 0px;
-    font-size: 0.8em;
+    font-size: 1em;
   }
   .card-body p {
-    font-size: 1.1em;
+    font-size: 1em;
   }
   .project-container p {
     font-size: 1em !important;
