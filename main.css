@@ -412,10 +412,11 @@ h3 {
   }
   h1 {
     font-size: 1.8em;
+    line-height: 1.4em;
   }
   h3 {
     letter-spacing: 0px;
-    font-size: 0.7em;
+    font-size: 0.8em;
   }
   .card-body p {
     font-size: 1.1em;
