@@ -103,7 +103,8 @@ loadProject = function() {
       'width': $this.find('img').outerWidth(),
       'margin-left': 0,
       'margin-right': 0,
-      'opacity': 0.2
+      'opacity': 0.2,
+      'overflow': 'hidden'
     })
     .data({
       initialLeft: initialPosition.left,
@@ -114,7 +115,8 @@ loadProject = function() {
       '-webkit-border-radius': '7px',
       '-moz-border-radius': '7px',
       '-ms-border-radius': '7px',
-      'border-radius': '7px'
+      'border-radius': '7px',
+      'margin-bottom': 0
     });
   var mainCardPaddingWidth = $('#main-card .card-padding-wrapper').width()
   var margin = (width - Math.min(width, 1300))/2
@@ -137,14 +139,16 @@ loadProject = function() {
     'width': Math.min(width, 1300),
     'margin-left': margin,
     'margin-right': margin,
-    'opacity': 1
+    'opacity': 1,
+    'overflow': 'visible'
   });
   var scaleValue = 0.95;
   card.css({
     '-webkit-border-radius': borderRadius,
     '-moz-border-radius': borderRadius,
     '-ms-border-radius': borderRadius,
-    'border-radius': borderRadius
+    'border-radius': borderRadius,
+    'margin-bottom': 45
   });
   setTimeout( function() {
     $('#main-card .card-padding-wrapper').css({
@@ -178,14 +182,16 @@ closeCard = function(card) {
       'width': projectContainer.find('img').outerWidth(),
       'margin-left': 0,
       'margin-right': 0,
-      'opacity': 0.2
+      'opacity': 0.2,
+      'overflow': 'hidden'
     });
   card.find('.card')
     .css({
       '-webkit-border-radius': '7px',
       '-moz-border-radius': '7px',
       '-ms-border-radius': '7px',
-      'border-radius': '7px'
+      'border-radius': '7px',
+      'margin-bottom': 0
     });
   setTimeout( function() {
     card.remove();
