@@ -7,7 +7,7 @@ var projects = [
   },
   {
     title: 'comake.io',
-    card_image: 'img/comake.svg',
+    card_image: 'img/comake.png',
     link: 'comake',
     description: "The modern workflow browser. Fall 2016 - Present"
   },
