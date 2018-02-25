@@ -2,52 +2,68 @@ var projects = [
   {
     title: 'About me',
     card_image: 'img/me.png',
-    link: 'about'
+    link: 'about',
+    description: "Creating useful, sophosticated, & playful objects. 1995 - Present"
   },
   {
     title: 'comake.io',
     card_image: 'img/comake.svg',
-    link: 'comake'
+    link: 'comake',
+    description: "The modern workflow browser. Fall 2016 - Present"
+  },
+  {
+    title: 'MenuMe',
+    card_image: 'img/menume_background.png',
+    link: 'menume',
+    description: ". Summer 2015 - Fall 2016"
   },
   {
     title: 'Wire Bender',
     card_image: 'img/wire-bender.gif',
-    link: 'wire-bender'
+    link: 'wire-bender',
+    description: "Small scale 3d wire bending machine for rapid prototyping. Fall 2017"
   },
   {
     title: 'Light 👉🏽 Sound',
     card_image: 'img/LtoS.png',
-    link: 'light-to-sound'
+    link: 'light-to-sound',
+    description: "An experiment in seeing with sound. Spring 2015"
   },
   {
     title: 'Paint',
     card_image: 'img/dot_burst.jpg',
-    link: 'paint'
+    link: 'paint',
+    description: "Acryllic & mixed media paintings. 2010 - 2013"
   },
   {
     title: 'Draw',
     card_image: 'img/eye.jpg',
-    link: 'draw'
+    link: 'draw',
+    description: "Graphite and charcoal drawings. 2011 - 2015"
   },
   {
     title: 'Tesselation',
     card_image: 'img/tesselas.png',
-    link: 'tesselation'
+    link: 'tesselation',
+    description: "Visual Literacy and Design Studio project. Spring 2015"
   },
   {
-    title: 'Beacon App',
+    title: 'Eatery App',
     card_image: 'img/beacon_creation.png',
-    link: 'beacon-app'
+    link: 'eatery-app',
+    description: "Cornell App Development - Eatery iOS application. Fall 2014"
   },
   {
     title: 'Architectural Association',
     card_image: 'img/to_trace.jpg',
-    link: 'architectural-association'
+    link: 'architectural-association',
+    description: "Architectural Association School of Architecture. Summer 2014"
   },
   {
     title: 'Deutsche Bank x DesignBoom',
     card_image: 'img/Smartphone_CloudTech.jpg',
-    link: 'deutsche-designboom'
+    link: 'deutsche-designboom',
+    description: "DeutscheBank DesignBoom International Competition. Summer 2014"
   },
 ];
 
@@ -62,10 +78,21 @@ loadProject = function() {
     history.pushState({isValid:true}, "", url + "#" + thisPageLink);
     pageLink = thisPageLink;
   }
-  initialPosition = $this.offset()
+  var initialPosition = $this.offset();
   var newCard = cardTemplate.clone()
-    .removeClass('template');
-  $('body').append(newCard)
+    .removeClass('template')
+    .data({
+      link: thisPageLink
+    });
+  var projectData = projects.find(function(project) {
+    return project.link == thisPageLink;
+  })
+  newCard.find('h1').html(projectData.title)
+  newCard.find('h3').html(projectData.description)
+  newCard.find('.card-body').load('pages/' + thisPageLink + '.html')
+
+  $('body').append(newCard);
+  var width = window.innerWidth;
 
   var cardPadding = newCard.find('.card-padding-wrapper')
     .css({
@@ -77,6 +104,10 @@ loadProject = function() {
       'margin-left': 0,
       'margin-right': 0,
       'opacity': 0.2
+    })
+    .data({
+      initialLeft: initialPosition.left,
+      initialTop: initialPosition.top
     });
   var card = cardPadding.find('.card')
     .css({
@@ -86,23 +117,34 @@ loadProject = function() {
       'border-radius': '7px'
     });
   var mainCardPaddingWidth = $('#main-card .card-padding-wrapper').width()
-  var margin = (window.innerWidth - Math.min(window.innerWidth, 1300))/2
+  var margin = (width - Math.min(width, 1300))/2
+  var edgePadding, borderRadius;
+  if (width < 600) {
+    edgePadding = 20;
+    borderRadius = 15;
+  } else if (width < 800) {
+    edgePadding = 30;
+    borderRadius = 25;
+  } else {
+    edgePadding = 45;
+    borderRadius = 35;
+  }
   cardPadding.css({
     'left': 0,
     'top': 0,
-    'padding':45,
+    'padding':edgePadding,
     'height': window.innerHeight,
-    'width': Math.min(window.innerWidth, 1300),
+    'width': Math.min(width, 1300),
     'margin-left': margin,
     'margin-right': margin,
     'opacity': 1
   });
   var scaleValue = 0.95;
   card.css({
-    '-webkit-border-radius': '35px',
-    '-moz-border-radius': '35px',
-    '-ms-border-radius': '35px',
-    'border-radius': '35px'
+    '-webkit-border-radius': borderRadius,
+    '-moz-border-radius': borderRadius,
+    '-ms-border-radius': borderRadius,
+    'border-radius': borderRadius
   });
   setTimeout( function() {
     $('#main-card .card-padding-wrapper').css({
@@ -115,6 +157,50 @@ loadProject = function() {
       '-webkit-filter' : 'blur(4px)',
       'filter': 'blur(4px)'
     }).addClass('darken')
+  }, 100);
+}
+
+closeCard = function(card) {
+  var thisPageLink = card.data('link')
+  // Update the browser url if the current pageLink is not this page's link
+  history.pushState({isValid:true}, "", url);
+  pageLink = null;
+
+  var projectContainer = $(".project-container[link='" + thisPageLink + "']");
+  var finalPosition = projectContainer.offset();
+  var paddingWrapper = card.find('.card-padding-wrapper')
+  paddingWrapper
+    .css({
+      'padding':0,
+      'left': paddingWrapper.data('initialLeft'),
+      'top': paddingWrapper.data('initialTop'),
+      'height': projectContainer.find('img').outerHeight(),
+      'width': projectContainer.find('img').outerWidth(),
+      'margin-left': 0,
+      'margin-right': 0,
+      'opacity': 0.2
+    });
+  card.find('.card')
+    .css({
+      '-webkit-border-radius': '7px',
+      '-moz-border-radius': '7px',
+      '-ms-border-radius': '7px',
+      'border-radius': '7px'
+    });
+  setTimeout( function() {
+    card.remove();
+  }, 300)
+  setTimeout( function() {
+    $('#main-card .card-padding-wrapper').css({
+      'left' : 0,
+      '-webkit-transform' : 'scale(1)',
+      '-moz-transform'    : 'scale(1)',
+      '-ms-transform'     : 'scale(1)',
+      '-o-transform'      : 'scale(1)',
+      'transform'         : 'scale(1)',
+      '-webkit-filter' : 'blur(0px)',
+      'filter': 'blur(0px)'
+    }).removeClass('darken')
   }, 100);
 }
 
@@ -179,3 +265,44 @@ window.onload = function() {
   cardTemplate = $('.card-scroll-wrapper.template');
   loadProjectContainer(0);
 };
+
+window.onresize = function() {
+  if ($('.card-scroll-wrapper:not(#main-card):not(.template) .card-padding-wrapper').length) {
+    var width = window.innerWidth;
+    var margin = (width - Math.min(width, 1300))/2;
+    var edgePadding, borderRadius;
+    if (width < 600) {
+      edgePadding = 20;
+      borderRadius = 15;
+    } else if (width < 800) {
+      edgePadding = 30;
+      borderRadius = 25;
+    } else {
+      edgePadding = 45;
+      borderRadius = 35;
+    }
+    $('.card-scroll-wrapper:not(.template) .card-padding-wrapper').css('padding', edgePadding);
+    $('.card-scroll-wrapper:not(#main-card):not(.template) .card-padding-wrapper').css({
+      'height': window.innerHeight,
+      'width': Math.min(width, 1300),
+      'margin-left': margin,
+      'margin-right': margin
+    });
+    $('.card-scroll-wrapper:not(.template) .card').css({
+      '-webkit-border-radius': borderRadius,
+      '-moz-border-radius': borderRadius,
+      '-ms-border-radius': borderRadius,
+      'border-radius': borderRadius
+    });
+    var mainCardPaddingWidth = $('#main-card .card-padding-wrapper').width()
+    $('#main-card .card-padding-wrapper').css('left',  -(mainCardPaddingWidth*0.08));
+  }
+}
+
+$(document).on('click', '.card-scroll-wrapper .close-button, .card-scroll-wrapper .card-padding-wrapper', function(event) {
+  if ($(event.target).is('.close-button, .close-button *, .card-padding-wrapper')) {
+    var $this = $(this);
+    var card = $this.closest('.card-scroll-wrapper');
+    closeCard(card);
+  }
+});

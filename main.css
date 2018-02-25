@@ -15,7 +15,7 @@ a {
 }
 a:hover {
   color: #2A5280;
-  border-bottom: 1px solid #2A5280;
+  border-bottom: 1px solid #315F94;
 }
 .template {
   display: none !important;
@@ -96,6 +96,7 @@ body {
   max-width: 1300px;
   margin:0;
   opacity: 0;
+  overflow: hidden;
   -webkit-transform : scale(1);
   -moz-transform    : scale(1);
   -ms-transform     : scale(1);
@@ -103,34 +104,33 @@ body {
   transform         : scale(1);
   -webkit-filter : blur(0px);
   filter: blur(0px);
-  -webkit-transition: all 400ms ease-in;
-  -moz-transition:  all 400ms ease-in;
-  -ms-transition:  all 400ms ease-in;
-  -o-transition: all 400ms ease-in;
-  transition: all 400ms ease-in;
+  -webkit-transition: all 300ms ease-in;
+  -moz-transition:  all 300ms ease-in;
+  -ms-transition:  all 300ms ease-in;
+  -o-transition: all 300ms ease-in;
+  transition: all 300ms ease-in;
 }
-
 .card {
   position: relative;
   background-color: white;
   -webkit-box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
-  min-height: 100%;
+  /* min-height: 100%;  */
   overflow: hidden;
-  -webkit-transition: all 400ms ease-in;
-  -moz-transition:  all 400ms ease-in;
-  -ms-transition:  all 400ms ease-in;
-  -o-transition: all 400ms ease-in;
-  transition: all 400ms ease-in;
+  -webkit-transition: all 300ms ease-in;
+  -moz-transition:  all 300ms ease-in;
+  -ms-transition:  all 300ms ease-in;
+  -o-transition: all 300ms ease-in;
+  transition: all 300ms ease-in;
 }
 .card:after {
   background-color: transparent;
-  -webkit-transition: background-color 400ms ease-in;
-  -moz-transition:  background-color 400ms ease-in;
-  -ms-transition:  background-color 400ms ease-in;
-  -o-transition: background-color 400ms ease-in;
-  transition: background-color 400ms ease-in;
+  -webkit-transition: background-color 300ms ease-in;
+  -moz-transition:  background-color 300ms ease-in;
+  -ms-transition:  background-color 300ms ease-in;
+  -o-transition: background-color 300ms ease-in;
+  transition: background-color 300ms ease-in;
 }
 
 .card-header {
@@ -210,6 +210,7 @@ h1 {
   font-size: 3.5em;
   margin:0;
   line-height: 0.8em;
+  color: black;
 }
 h3 {
   letter-spacing: 1px;
@@ -220,24 +221,31 @@ h3 {
   line-height: 1.4em;
   color:#737373;
 }
+.card-body p {
+  font-family: openSansRegular;
+  color:black;
+  font-size: 1.5em;
+  line-height: 1.5em;
+}
 
 .card-body {
   background-color: #f9f9f9;
-  padding: 45px 30px;
-  min-height: 100%;
+  padding: 45px 45px;
+  /* min-height: 100%; */
 }
 #main-card .card-body {
   display: grid;
   grid-template-columns: repeat(auto-fill,minmax(260px, 1fr));
+  padding: 30px 30px;
 }
 
 .project-container {
   opacity: 0;
-  -webkit-transition: opacity 400ms ease-in;
-  -moz-transition: opacity 400ms ease-in;
-  -ms-transition: opacity 400ms ease-in;
-  -o-transition: opacity 400ms ease-in;
-  transition: opacity 400ms ease-in;
+  -webkit-transition: opacity 300ms ease-in;
+  -moz-transition: opacity 300ms ease-in;
+  -ms-transition: opacity 300ms ease-in;
+  -o-transition: opacity 300ms ease-in;
+  transition: opacity 300ms ease-in;
   position: relative;
   margin:15px 15px 40px 15px;
 }
@@ -287,7 +295,8 @@ h3 {
   font-family: openSansRegular;
   color:black;
   margin:0;
-  padding-top: 12px;
+  font-size: 1em !important;
+  padding-top: 10px;
 }
 .project-container:hover p {
   border-bottom: 1px solid black;
@@ -300,4 +309,123 @@ h3 {
   width:100%;
   height:100%;
   background-color: rgba(0,0,0,0.1);
+}
+.close-button {
+  position: absolute;
+  right:30px;
+  top:30px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+ 	-webkit-align-items: center;
+ 	align-items: center;
+  -webkit-box-pack: center;
+	-moz-box-pack: center;
+	-ms-flex-pack: center;
+ 	-webkit-justify-content: center;
+	justify-content: center;
+  background-color: #EFEFEF;
+  -webkit-transition: -webkit-transform 100ms ease-in;
+  -moz-transition: -moz-transform 100ms ease-in;
+  -ms-transition: -ms-transform 100ms ease-in;
+  -o-transition: -o-transform 100ms ease-in;
+  transition: transform 100ms ease-in;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  -moz-transform: scale(1);
+  transform: scale(1);
+  height:46px;
+  width:46px;
+  margin-left:15px;
+  -webkit-border-radius: 23px;
+  -moz-border-radius: 23px;
+  -ms-border-radius: 23px;
+  border-radius: 23px;
+}
+.close-button:hover {
+  cursor: pointer;
+  background-color: #DEDEDE;
+  -webkit-transform: scale(1.07);
+  -ms-transform: scale(1.07);
+  -moz-transform: scale(1.07);
+  transform: scale(1.07);
+  border: none !important;
+}
+@media only screen and (max-width: 800px ) {
+  .card-padding-wrapper {
+    padding: 30px !important;
+  }
+  #main-card .card {
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    -ms-border-radius: 25px;
+    border-radius: 25px;
+  }
+  h1 {
+    font-size: 2.1em;
+  }
+  h3 {
+    font-size: 0.8em;
+  }
+  .card-body {
+    padding: 15px 15px 20px 15px;
+    /* min-height: 100%; */
+  }
+  .card-header {
+    padding:30px;
+  }
+  .close-button {
+    right:25px;
+    top:25px;
+  }
+}
+@media only screen and (max-width: 600px ) {
+  .card-padding-wrapper {
+    padding: 20px !important;
+  }
+  #main-card .card {
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    border-radius: 15px;
+  }
+  .main-card-header {
+    -webkit-box-orient:vertical;
+		-ms-box-orient:vertical;
+		-moz-box-orient:vertical;
+		box-orient:vertical;
+		-webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+		flex-direction: column;
+  }
+  h1 {
+    font-size: 1.8em;
+  }
+  h3 {
+    font-size: 0.7em;
+  }
+  .main-card-header-text {
+    margin-bottom: 15px;
+  }
+  .main-card-header-links a {
+    margin-left: 0 !important;
+    margin-right: 15px;
+  }
+  .card-body {
+    padding: 5px 5px 15px 5px;
+    /* min-height: 100%; */
+  }
+  .card-header {
+    padding:20px;
+  }
+  .close-button {
+    right:15px;
+    top:15px;
+  }
 }
