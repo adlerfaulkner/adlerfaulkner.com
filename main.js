@@ -74,6 +74,10 @@ loadProject = function() {
   // Get the link for this card
   var thisPageLink = $this.data('link')
   // Update the browser url if the current pageLink is not this page's link
+  if (thisPageLink == 'comake') {
+    location.href = "https://comake.io";
+    return
+  }
   if (pageLink != thisPageLink) {
     history.pushState({isValid:true}, "", url + "#" + thisPageLink);
     pageLink = thisPageLink;
@@ -305,7 +309,7 @@ window.onresize = function() {
   }
 }
 
-$(document).on('click', '.card-scroll-wrapper .close-button, .card-scroll-wrapper .card-padding-wrapper', function(event) {
+$(document).on('click', '.card-scroll-wrapper .close-button, .card-scroll-wrapper:not(#main-card) .card-padding-wrapper', function(event) {
   if ($(event.target).is('.close-button, .close-button *, .card-padding-wrapper')) {
     var $this = $(this);
     var card = $this.closest('.card-scroll-wrapper');
