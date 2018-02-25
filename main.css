@@ -373,10 +373,7 @@ h3 {
     font-size: 1em;
   }
   .card-body p {
-    font-size: 1em;
-  }
-  .project-container p {
-    font-size: 1em !important;
+    font-size: 1.2em;
   }
   .card-body {
     padding:30px;
@@ -423,6 +420,9 @@ h3 {
   }
   .project-container p {
     font-size: 1em !important;
+  }
+  .project-container {
+    margin-bottom:60px;
   }
   .main-card-header-text {
     margin-bottom: 15px;
