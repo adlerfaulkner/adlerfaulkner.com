@@ -1,73 +1,103 @@
 var projects = [
   {
     title: 'About me',
-    card_image: 'img/me.png',
+    card_image: 'img/cards/me.png',
     link: 'about',
     description: "Creating useful, sophosticated, & playful objects. 1995 - Present"
   },
   {
     title: 'comake.io',
-    card_image: 'img/comake.png',
+    card_image: 'img/cards/comake.png',
     link: 'comake',
     description: "The modern workflow browser. Fall 2016 - Present"
   },
   {
     title: 'MenuMe',
-    card_image: 'img/menume_background.png',
+    card_image: 'img/cards/menume_background.png',
     link: 'menume',
-    description: ". Summer 2015 - Fall 2016"
+    description: "Software Engineer and Product Designer. Summer 2015 - Spring 2016"
   },
   {
     title: 'Wire Bender',
-    card_image: 'img/wire-bender.gif',
+    card_image: 'img/cards/wire-bender.gif',
     link: 'wire-bender',
     description: "Small scale 3d wire bending machine for rapid prototyping. Fall 2017"
   },
   {
     title: 'Light 👉🏽 Sound',
-    card_image: 'img/LtoS.png',
+    card_image: 'img/cards/LtoS.png',
     link: 'light-to-sound',
     description: "An experiment in seeing with sound. Spring 2015"
   },
   {
-    title: 'Paint',
-    card_image: 'img/dot_burst.jpg',
-    link: 'paint',
+    title: 'Paintings',
+    card_image: 'img/cards/dot_burst.jpg',
+    link: 'paintings',
     description: "Acryllic & mixed media paintings. 2010 - 2013"
   },
   {
-    title: 'Draw',
-    card_image: 'img/eye.jpg',
-    link: 'draw',
+    title: 'Drawings',
+    card_image: 'img/cards/eye.jpg',
+    link: 'drawings',
     description: "Graphite and charcoal drawings. 2011 - 2015"
   },
   {
     title: 'Tesselation',
-    card_image: 'img/tesselas.png',
+    card_image: 'img/cards/tesselas.png',
     link: 'tesselation',
     description: "Visual Literacy and Design Studio project. Spring 2015"
   },
   {
     title: 'Eatery App',
-    card_image: 'img/beacon_creation.png',
+    card_image: 'img/cards/beacon_creation.png',
     link: 'eatery-app',
     description: "Cornell App Development - Eatery iOS application. Fall 2014"
   },
   {
     title: 'Architectural Association',
-    card_image: 'img/to_trace.jpg',
+    card_image: 'img/cards/to_trace.jpg',
     link: 'architectural-association',
     description: "Architectural Association School of Architecture. Summer 2014"
   },
   {
     title: 'Deutsche Bank x DesignBoom',
-    card_image: 'img/Smartphone_CloudTech.jpg',
+    card_image: 'img/cards/Smartphone_CloudTech.jpg',
     link: 'deutsche-designboom',
     description: "DeutscheBank DesignBoom International Competition. Summer 2014"
   },
 ];
 
-var projectTemplate, projectList, url, idx, pageLink, cardTemplate;
+var projectTemplate, projectList, url, idx, pageLink, cardTemplate, scaleValue, secondScaleValue,windowWidth, edgePadding, borderRadius, cardMargin;
+
+setCardToSmallState = function(cardPadding, position, height, width) {
+  cardPadding.css({
+    'padding':0,
+    'left': position.left,
+    'top': position.top,
+    'height': height,
+    'width': width,
+    'margin-left': 0,
+    'margin-right': 0,
+    'opacity': 0.2,
+    'overflow': 'hidden'
+  })
+  .data({
+    initialLeft: position.left,
+    initialTop: position.top,
+    initialWidth: width,
+    initialHeight: height
+  });
+}
+setCardToSmallBorderRadius = function(card, radius) {
+  card.css({
+    '-webkit-border-radius': radius,
+    '-moz-border-radius': radius,
+    '-ms-border-radius': radius,
+    'border-radius': radius,
+    'margin-bottom': 0
+  });
+}
+
 
 loadProject = function() {
   var $this = $(this);
@@ -96,57 +126,22 @@ loadProject = function() {
   newCard.find('.card-body').load('pages/' + thisPageLink + '.html')
 
   $('body').append(newCard);
-  var width = window.innerWidth;
-
-  var cardPadding = newCard.find('.card-padding-wrapper')
-    .css({
-      'padding':0,
-      'left': initialPosition.left,
-      'top': initialPosition.top,
-      'height': $this.find('img').outerHeight(),
-      'width': $this.find('img').outerWidth(),
-      'margin-left': 0,
-      'margin-right': 0,
-      'opacity': 0.2,
-      'overflow': 'hidden'
-    })
-    .data({
-      initialLeft: initialPosition.left,
-      initialTop: initialPosition.top
-    });
-  var card = cardPadding.find('.card')
-    .css({
-      '-webkit-border-radius': '7px',
-      '-moz-border-radius': '7px',
-      '-ms-border-radius': '7px',
-      'border-radius': '7px',
-      'margin-bottom': 0
-    });
+  var cardPadding = newCard.find('.card-padding-wrapper');
+  setCardToSmallState(cardPadding, initialPosition, $this.find('img').outerHeight(), $this.find('img').outerWidth());
+  var card = cardPadding.find('.card');
+  setCardToSmallBorderRadius(card, 7);
   var mainCardPaddingWidth = $('#main-card .card-padding-wrapper').width()
-  var margin = (width - Math.min(width, 1300))/2
-  var edgePadding, borderRadius;
-  if (width < 600) {
-    edgePadding = 20;
-    borderRadius = 15;
-  } else if (width < 800) {
-    edgePadding = 30;
-    borderRadius = 25;
-  } else {
-    edgePadding = 45;
-    borderRadius = 35;
-  }
   cardPadding.css({
     'left': 0,
     'top': 0,
     'padding':edgePadding,
     'height': window.innerHeight,
-    'width': Math.min(width, 1300),
-    'margin-left': margin,
-    'margin-right': margin,
+    'width': Math.min(windowWidth, 1300),
+    'margin-left': cardMargin,
+    'margin-right': cardMargin,
     'opacity': 1,
     'overflow': 'visible'
   });
-  var scaleValue = 0.95;
   card.css({
     '-webkit-border-radius': borderRadius,
     '-moz-border-radius': borderRadius,
@@ -156,14 +151,14 @@ loadProject = function() {
   });
   setTimeout( function() {
     $('#main-card .card-padding-wrapper').css({
-      'left' : -(mainCardPaddingWidth*0.08),
+      'left' : -(mainCardPaddingWidth*0.07),
       '-webkit-transform' : 'scale(' + scaleValue + ')',
       '-moz-transform'    : 'scale(' + scaleValue + ')',
       '-ms-transform'     : 'scale(' + scaleValue + ')',
       '-o-transform'      : 'scale(' + scaleValue + ')',
       'transform'         : 'scale(' + scaleValue + ')',
-      '-webkit-filter' : 'blur(4px)',
-      'filter': 'blur(4px)'
+      '-webkit-filter' : 'blur(2px)',
+      'filter': 'blur(2px)'
     }).addClass('darken')
   }, 100);
 }
@@ -174,34 +169,46 @@ closeCard = function(card) {
   history.pushState({isValid:true}, "", url);
   pageLink = null;
 
-  var projectContainer = $(".project-container[link='" + thisPageLink + "']");
-  var finalPosition = projectContainer.offset();
   var paddingWrapper = card.find('.card-padding-wrapper')
-  paddingWrapper
-    .css({
-      'padding':0,
-      'left': paddingWrapper.data('initialLeft'),
-      'top': paddingWrapper.data('initialTop'),
-      'height': projectContainer.find('img').outerHeight(),
-      'width': projectContainer.find('img').outerWidth(),
-      'margin-left': 0,
-      'margin-right': 0,
-      'opacity': 0.2,
-      'overflow': 'hidden'
-    });
-  card.find('.card')
-    .css({
-      '-webkit-border-radius': '7px',
-      '-moz-border-radius': '7px',
-      '-ms-border-radius': '7px',
-      'border-radius': '7px',
-      'margin-bottom': 0
-    });
+  setCardToSmallState(paddingWrapper, { left: paddingWrapper.data('initialLeft'), top: paddingWrapper.data('initialTop')}, paddingWrapper.data('initialHeight'), paddingWrapper.data('initialWidth'))
+  setCardToSmallBorderRadius(card.find('.card'), 7)
   setTimeout( function() {
     card.remove();
   }, 300)
   setTimeout( function() {
     $('#main-card .card-padding-wrapper').css({
+      'left' : 0,
+      '-webkit-transform' : 'scale(1)',
+      '-moz-transform'    : 'scale(1)',
+      '-ms-transform'     : 'scale(1)',
+      '-o-transform'      : 'scale(1)',
+      'transform'         : 'scale(1)',
+      '-webkit-filter' : 'blur(0px)',
+      'filter': 'blur(0px)'
+    }).removeClass('darken')
+  }, 100);
+}
+
+closeImageCard = function(card) {
+  var paddingWrapper = card.find('.card-padding-wrapper')
+  setCardToSmallState(paddingWrapper, { left: paddingWrapper.data('initialLeft'), top: paddingWrapper.data('initialTop')}, paddingWrapper.data('initialHeight'), paddingWrapper.data('initialWidth'))
+  setCardToSmallBorderRadius(card.find('.card'), 0)
+  setTimeout( function() {
+    card.remove();
+  }, 300)
+  var mainCardPaddingWidth = $('#main-card .card-padding-wrapper').width()
+  setTimeout( function() {
+    $('#main-card .card-padding-wrapper').css({
+      'left' : -(mainCardPaddingWidth*0.07),
+      '-webkit-transform' : 'scale(' + scaleValue + ')',
+      '-moz-transform'    : 'scale(' + scaleValue + ')',
+      '-ms-transform'     : 'scale(' + scaleValue + ')',
+      '-o-transform'      : 'scale(' + scaleValue + ')',
+      'transform'         : 'scale(' + scaleValue + ')',
+      '-webkit-filter' : 'blur(2px)',
+      'filter': 'blur(2px)'
+    }).removeClass('double-darken')
+    $('.project-card:not(.template) .card-padding-wrapper').css({
       'left' : 0,
       '-webkit-transform' : 'scale(1)',
       '-moz-transform'    : 'scale(1)',
@@ -269,34 +276,53 @@ loadCardFromUrl = function() {
   }
 }
 
+edgePaddingFn = function() {
+  if (windowWidth < 600) {
+    return 20;
+  } else if (windowWidth < 800) {
+    return 30;
+  } else {
+    return 45;
+  }
+}
+
+borderRadiusFn = function() {
+  if (windowWidth < 600) {
+    return 15;
+  } else if (windowWidth < 800) {
+    return 25;
+  } else {
+    return 35;
+  }
+}
+
 window.onload = function() {
   projectTemplate = $('.project-container.template');
   projectList = $('#main-card .card-body');
-  cardTemplate = $('.card-scroll-wrapper.template');
+  cardTemplate = $('.project-card.template');
+  imageCardTemplate = $('.image-card.template');
+  scaleValue = 0.96;
+  secondScaleValue = 0.94;
+  windowWidth = window.innerWidth;
+  edgePadding = edgePaddingFn();
+  borderRadius = borderRadiusFn();
+  cardMargin = (windowWidth - Math.min(windowWidth, 1300))/2;
   loadProjectContainer(0);
 };
 
 window.onresize = function() {
+  windowWidth = window.innerWidth;
+  edgePadding = edgePaddingFn();
+  borderRadius = borderRadiusFn();
+  cardMargin = (windowWidth - Math.min(windowWidth, 1300))/2;
   if ($('.card-scroll-wrapper:not(#main-card):not(.template) .card-padding-wrapper').length) {
-    var width = window.innerWidth;
-    var margin = (width - Math.min(width, 1300))/2;
-    var edgePadding, borderRadius;
-    if (width < 600) {
-      edgePadding = 20;
-      borderRadius = 15;
-    } else if (width < 800) {
-      edgePadding = 30;
-      borderRadius = 25;
-    } else {
-      edgePadding = 45;
-      borderRadius = 35;
-    }
+
     $('.card-scroll-wrapper:not(.template) .card-padding-wrapper').css('padding', edgePadding);
     $('.card-scroll-wrapper:not(#main-card):not(.template) .card-padding-wrapper').css({
       'height': window.innerHeight,
-      'width': Math.min(width, 1300),
-      'margin-left': margin,
-      'margin-right': margin
+      'width': Math.min(windowWidth, 1300),
+      'margin-left': cardMargin,
+      'margin-right': cardMargin
     });
     $('.card-scroll-wrapper:not(.template) .card').css({
       '-webkit-border-radius': borderRadius,
@@ -304,8 +330,13 @@ window.onresize = function() {
       '-ms-border-radius': borderRadius,
       'border-radius': borderRadius
     });
-    var mainCardPaddingWidth = $('#main-card .card-padding-wrapper').width()
-    $('#main-card .card-padding-wrapper').css('left',  -(mainCardPaddingWidth*0.08));
+    var mainCardPadding = $('#main-card .card-padding-wrapper')
+    var mainCardPaddingWidth = mainCardPadding.width()
+    if (mainCardPadding.hasClass("double-darken")) {
+      $('#main-card .card-padding-wrapper').css('left',  -(mainCardPaddingWidth*0.12));
+    } else {
+      $('#main-card .card-padding-wrapper').css('left',  -(mainCardPaddingWidth*0.07));
+    }
   }
 }
 
@@ -313,6 +344,65 @@ $(document).on('click', '.card-scroll-wrapper .close-button, .card-scroll-wrappe
   if ($(event.target).is('.close-button, .close-button *, .card-padding-wrapper')) {
     var $this = $(this);
     var card = $this.closest('.card-scroll-wrapper');
-    closeCard(card);
+    if (card.is('.image-card')) {
+      closeImageCard(card);
+    } else {
+      closeCard(card);
+    }
   }
+});
+
+$(document).on('click', '.clickable-image', function() {
+  var $this = $(this)
+  var initialPosition = $this.offset();
+  var newCard = imageCardTemplate.clone()
+    .removeClass('template');
+  newCard.find('img.large-image').attr('src', $this.attr('data-large-image'))
+  newCard.find('p').html($this.attr('data-caption'))
+  $('body').append(newCard);
+  var cardPadding = newCard.find('.card-padding-wrapper');
+  setCardToSmallState(cardPadding, initialPosition, $this.outerHeight(), $this.outerWidth());
+  var card = cardPadding.find('.card');
+  setCardToSmallBorderRadius(card, 0);
+  var projectCardPaddingWidth = $('.project-card:not(.template) .card-padding-wrapper').width()
+  cardPadding.css({
+    'left': 0,
+    'top': 0,
+    'padding':edgePadding,
+    'height': window.innerHeight,
+    'width': Math.min(windowWidth, 1300),
+    'margin-left': cardMargin,
+    'margin-right': cardMargin,
+    'opacity': 1,
+    'overflow': 'visible'
+  });
+  card.css({
+    '-webkit-border-radius': borderRadius,
+    '-moz-border-radius': borderRadius,
+    '-ms-border-radius': borderRadius,
+    'border-radius': borderRadius,
+    'margin-bottom': 45
+  });
+  setTimeout( function() {
+    $('#main-card .card-padding-wrapper').css({
+      'left' : -(projectCardPaddingWidth*0.12),
+      '-webkit-transform' : 'scale(' + secondScaleValue + ')',
+      '-moz-transform'    : 'scale(' + secondScaleValue + ')',
+      '-ms-transform'     : 'scale(' + secondScaleValue + ')',
+      '-o-transform'      : 'scale(' + secondScaleValue + ')',
+      'transform'         : 'scale(' + secondScaleValue + ')',
+      '-webkit-filter' : 'blur(4px)',
+      'filter': 'blur(4px)'
+    }).addClass('double-darken')
+    $('.project-card:not(.template) .card-padding-wrapper').css({
+      'left' : -(projectCardPaddingWidth*0.07),
+      '-webkit-transform' : 'scale(' + scaleValue + ')',
+      '-moz-transform'    : 'scale(' + scaleValue + ')',
+      '-ms-transform'     : 'scale(' + scaleValue + ')',
+      '-o-transform'      : 'scale(' + scaleValue + ')',
+      'transform'         : 'scale(' + scaleValue + ')',
+      '-webkit-filter' : 'blur(2px)',
+      'filter': 'blur(2px)'
+    }).addClass('darken')
+  }, 100);
 });
