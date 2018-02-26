@@ -140,7 +140,7 @@ loadProject = function() {
     'margin-left': cardMargin,
     'margin-right': cardMargin,
     'opacity': 1,
-    'overflow': 'visible'
+    'overflow': ''
   });
   card.css({
     '-webkit-border-radius': borderRadius,
@@ -374,7 +374,7 @@ $(document).on('click', '.clickable-image', function() {
     'margin-left': cardMargin,
     'margin-right': cardMargin,
     'opacity': 1,
-    'overflow': 'visible'
+    'overflow': ''
   });
   card.css({
     '-webkit-border-radius': borderRadius,
