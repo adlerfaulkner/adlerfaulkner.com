@@ -69,7 +69,30 @@ var projects = [
 
 var projectTemplate, projectList, url, idx, pageLink, cardTemplate, scaleValue, secondScaleValue,windowWidth, edgePadding, borderRadius, cardMargin;
 
+setCardToSLargeState = function(cardPadding) {
+  cardPadding.css({
+    'left': 0,
+    'top': 0,
+    'padding':edgePadding,
+    'height': window.innerHeight,
+    'width': Math.min(windowWidth, 1300),
+    'margin-left': cardMargin,
+    'margin-right': cardMargin,
+    'opacity': 1,
+    'overflow': 'hidden'
+  }).addClass('large');
+  setTimeout(function() {
+    cardPadding.css({
+      'height': '',
+      'overflow': ''
+    });
+  },400);
+}
+
 setCardToSmallState = function(cardPadding, position, height, width) {
+  if (cardPadding.hasClass('large')) {
+    cardPadding.css('height', window.innerHeight);
+  }
   cardPadding.css({
     'padding':0,
     'left': position.left,
@@ -80,12 +103,21 @@ setCardToSmallState = function(cardPadding, position, height, width) {
     'margin-right': 0,
     'opacity': 0.2,
     'overflow': 'hidden'
-  })
+  }).addClass('small')
   .data({
     initialLeft: position.left,
     initialTop: position.top,
     initialWidth: width,
     initialHeight: height
+  });
+}
+setCardToLargeBorderRadius = function(card, radius) {
+  card.css({
+    '-webkit-border-radius': radius,
+    '-moz-border-radius': radius,
+    '-ms-border-radius': radius,
+    'border-radius': radius,
+    'margin-bottom': 45
   });
 }
 setCardToSmallBorderRadius = function(card, radius) {
@@ -97,7 +129,20 @@ setCardToSmallBorderRadius = function(card, radius) {
     'margin-bottom': 0
   });
 }
-
+scaleAndBlurCard = function(card, scale, blur, addedClasses, removedClasses, left) {
+  card.css({
+    'left' : left,
+    '-webkit-transform' : 'scale(' + scale + ')',
+    '-moz-transform'    : 'scale(' + scale + ')',
+    '-ms-transform'     : 'scale(' + scale + ')',
+    '-o-transform'      : 'scale(' + scale + ')',
+    'transform'         : 'scale(' + scale + ')',
+    '-webkit-filter' : 'blur(' + blur + 'px)',
+    'filter': 'blur(' + blur + 'px)'
+  })
+  .removeClass(removedClasses)
+  .addClass(addedClasses);
+}
 
 loadProject = function() {
   var $this = $(this);
@@ -130,36 +175,11 @@ loadProject = function() {
   setCardToSmallState(cardPadding, initialPosition, $this.find('img').outerHeight(), $this.find('img').outerWidth());
   var card = cardPadding.find('.card');
   setCardToSmallBorderRadius(card, 7);
-  var mainCardPaddingWidth = $('#main-card .card-padding-wrapper').width()
-  cardPadding.css({
-    'left': 0,
-    'top': 0,
-    'padding':edgePadding,
-    'height': window.innerHeight,
-    'width': Math.min(windowWidth, 1300),
-    'margin-left': cardMargin,
-    'margin-right': cardMargin,
-    'opacity': 1,
-    'overflow': ''
-  });
-  card.css({
-    '-webkit-border-radius': borderRadius,
-    '-moz-border-radius': borderRadius,
-    '-ms-border-radius': borderRadius,
-    'border-radius': borderRadius,
-    'margin-bottom': 45
-  });
+  var mainCardPaddingWidth = $('#main-card .card-padding-wrapper').width();
+  setCardToSLargeState(cardPadding);
+  setCardToLargeBorderRadius(card,borderRadius);
   setTimeout( function() {
-    $('#main-card .card-padding-wrapper').css({
-      'left' : -(mainCardPaddingWidth*0.07),
-      '-webkit-transform' : 'scale(' + scaleValue + ')',
-      '-moz-transform'    : 'scale(' + scaleValue + ')',
-      '-ms-transform'     : 'scale(' + scaleValue + ')',
-      '-o-transform'      : 'scale(' + scaleValue + ')',
-      'transform'         : 'scale(' + scaleValue + ')',
-      '-webkit-filter' : 'blur(2px)',
-      'filter': 'blur(2px)'
-    }).addClass('darken')
+    scaleAndBlurCard($('#main-card .card-padding-wrapper'), scaleValue, 2, "darken", "", -(mainCardPaddingWidth*0.07))
   }, 100);
 }
 
@@ -176,16 +196,7 @@ closeCard = function(card) {
     card.remove();
   }, 300)
   setTimeout( function() {
-    $('#main-card .card-padding-wrapper').css({
-      'left' : 0,
-      '-webkit-transform' : 'scale(1)',
-      '-moz-transform'    : 'scale(1)',
-      '-ms-transform'     : 'scale(1)',
-      '-o-transform'      : 'scale(1)',
-      'transform'         : 'scale(1)',
-      '-webkit-filter' : 'blur(0px)',
-      'filter': 'blur(0px)'
-    }).removeClass('darken')
+    scaleAndBlurCard($('#main-card .card-padding-wrapper'), 1, 0, "", "darken", 0)
   }, 100);
 }
 
@@ -198,26 +209,8 @@ closeImageCard = function(card) {
   }, 300)
   var mainCardPaddingWidth = $('#main-card .card-padding-wrapper').width()
   setTimeout( function() {
-    $('#main-card .card-padding-wrapper').css({
-      'left' : -(mainCardPaddingWidth*0.07),
-      '-webkit-transform' : 'scale(' + scaleValue + ')',
-      '-moz-transform'    : 'scale(' + scaleValue + ')',
-      '-ms-transform'     : 'scale(' + scaleValue + ')',
-      '-o-transform'      : 'scale(' + scaleValue + ')',
-      'transform'         : 'scale(' + scaleValue + ')',
-      '-webkit-filter' : 'blur(2px)',
-      'filter': 'blur(2px)'
-    }).removeClass('double-darken')
-    $('.project-card:not(.template) .card-padding-wrapper').css({
-      'left' : 0,
-      '-webkit-transform' : 'scale(1)',
-      '-moz-transform'    : 'scale(1)',
-      '-ms-transform'     : 'scale(1)',
-      '-o-transform'      : 'scale(1)',
-      'transform'         : 'scale(1)',
-      '-webkit-filter' : 'blur(0px)',
-      'filter': 'blur(0px)'
-    }).removeClass('darken')
+    scaleAndBlurCard($('#main-card .card-padding-wrapper'), scaleValue, 2, "", "double-darken", -(mainCardPaddingWidth*0.07))
+    scaleAndBlurCard($('.project-card:not(.template) .card-padding-wrapper'), 1, 0, "", "darken", 0)
   }, 100);
 }
 
@@ -316,10 +309,8 @@ window.onresize = function() {
   borderRadius = borderRadiusFn();
   cardMargin = (windowWidth - Math.min(windowWidth, 1300))/2;
   if ($('.card-scroll-wrapper:not(#main-card):not(.template) .card-padding-wrapper').length) {
-
     $('.card-scroll-wrapper:not(.template) .card-padding-wrapper').css('padding', edgePadding);
     $('.card-scroll-wrapper:not(#main-card):not(.template) .card-padding-wrapper').css({
-      'height': window.innerHeight,
       'width': Math.min(windowWidth, 1300),
       'margin-left': cardMargin,
       'margin-right': cardMargin
@@ -334,6 +325,7 @@ window.onresize = function() {
     var mainCardPaddingWidth = mainCardPadding.width()
     if (mainCardPadding.hasClass("double-darken")) {
       $('#main-card .card-padding-wrapper').css('left',  -(mainCardPaddingWidth*0.12));
+      $('.project-card .card-padding-wrapper').css('left',  -(mainCardPaddingWidth*0.07));
     } else {
       $('#main-card .card-padding-wrapper').css('left',  -(mainCardPaddingWidth*0.07));
     }
@@ -364,45 +356,11 @@ $(document).on('click', '.clickable-image', function() {
   setCardToSmallState(cardPadding, initialPosition, $this.outerHeight(), $this.outerWidth());
   var card = cardPadding.find('.card');
   setCardToSmallBorderRadius(card, 0);
-  var projectCardPaddingWidth = $('.project-card:not(.template) .card-padding-wrapper').width()
-  cardPadding.css({
-    'left': 0,
-    'top': 0,
-    'padding':edgePadding,
-    'height': window.innerHeight,
-    'width': Math.min(windowWidth, 1300),
-    'margin-left': cardMargin,
-    'margin-right': cardMargin,
-    'opacity': 1,
-    'overflow': ''
-  });
-  card.css({
-    '-webkit-border-radius': borderRadius,
-    '-moz-border-radius': borderRadius,
-    '-ms-border-radius': borderRadius,
-    'border-radius': borderRadius,
-    'margin-bottom': 45
-  });
+  var projectCardPaddingWidth = $('.project-card:not(.template) .card-padding-wrapper').width();
+  setCardToSLargeState(cardPadding);
+  setCardToLargeBorderRadius(card,borderRadius);
   setTimeout( function() {
-    $('#main-card .card-padding-wrapper').css({
-      'left' : -(projectCardPaddingWidth*0.12),
-      '-webkit-transform' : 'scale(' + secondScaleValue + ')',
-      '-moz-transform'    : 'scale(' + secondScaleValue + ')',
-      '-ms-transform'     : 'scale(' + secondScaleValue + ')',
-      '-o-transform'      : 'scale(' + secondScaleValue + ')',
-      'transform'         : 'scale(' + secondScaleValue + ')',
-      '-webkit-filter' : 'blur(4px)',
-      'filter': 'blur(4px)'
-    }).addClass('double-darken')
-    $('.project-card:not(.template) .card-padding-wrapper').css({
-      'left' : -(projectCardPaddingWidth*0.07),
-      '-webkit-transform' : 'scale(' + scaleValue + ')',
-      '-moz-transform'    : 'scale(' + scaleValue + ')',
-      '-ms-transform'     : 'scale(' + scaleValue + ')',
-      '-o-transform'      : 'scale(' + scaleValue + ')',
-      'transform'         : 'scale(' + scaleValue + ')',
-      '-webkit-filter' : 'blur(2px)',
-      'filter': 'blur(2px)'
-    }).addClass('darken')
+    scaleAndBlurCard($('#main-card .card-padding-wrapper'), secondScaleValue, 4, "double-darken", "", -(projectCardPaddingWidth*0.12))
+    scaleAndBlurCard($('.project-card:not(.template) .card-padding-wrapper'), scaleValue, 2, "darken", "", -(projectCardPaddingWidth*0.07))
   }, 100);
 });
