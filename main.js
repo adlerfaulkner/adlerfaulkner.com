@@ -39,7 +39,7 @@ var projects = [
     title: 'Drawings',
     card_image: 'img/cards/eye.jpg',
     link: 'drawings',
-    description: "Graphite and charcoal drawings. 2011 - 2015"
+    description: "Graphite and charcoal drawings. 2009 - 2014"
   },
   {
     title: 'Tesselation',
